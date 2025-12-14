@@ -25,7 +25,6 @@ const Page = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [copyStatus, setCopyStatus] = useState("COPY");
-  const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
 
   const { data: ttlData } = useQuery({
     queryKey: ["ttl", roomId],
@@ -35,9 +34,15 @@ const Page = () => {
     },
   });
 
-  useEffect(() => {
-    if (ttlData?.ttl !== undefined) setTimeRemaining(ttlData.ttl);
-  }, [ttlData]);
+  // Initialize time remaining from ttlData, but only once when ttlData first becomes available
+  const [timeRemaining, setTimeRemaining] = useState<number | null>(
+    () => ttlData?.ttl ?? null
+  );
+
+  // Update timeRemaining only when ttlData changes and timeRemaining is still null
+  if (ttlData?.ttl !== undefined && timeRemaining === null) {
+    setTimeRemaining(ttlData.ttl);
+  }
 
   useEffect(() => {
     if (timeRemaining === null || timeRemaining < 0) return;
