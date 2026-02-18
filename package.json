@@ -1,5 +1,6 @@
 {
-  "name": "realtime-chat",
+  "name": "mayfly",
+  "description": "Mayfly — Anonymous Ephemeral Chat",
   "version": "0.1.0",
   "private": true,
   "scripts": {
